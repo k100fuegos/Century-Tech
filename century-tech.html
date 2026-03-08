@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Century Tech – Servicio Técnico Profesional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:      #0a0906;
+      --black2:     #111009;
+      --black3:     #181510;
+      --black4:     #221e16;
+      --gold:       #c9962a;
+      --gold-light: #e8b84b;
+      --gold-pale:  #f5d98a;
+      --gold-dark:  #8a6518;
+      --cream:      #f0e6cc;
+      --text:       #f0e6cc;
+      --muted:      #8a7d65;
+      --border:     rgba(201,150,42,.18);
+      --border2:    rgba(201,150,42,.08);
+      --grad-gold:  linear-gradient(135deg,#8a6518 0%,#c9962a 50%,#e8b84b 100%);
+      --grad-gold2: linear-gradient(90deg,#c9962a 0%,#f5d98a 100%);
+      --grad-bg:    linear-gradient(160deg,#0a0906 0%,#12100a 60%,#0e0c07 100%);
+      --font-d: 'Bebas Neue',sans-serif;
+      --font-s: 'Rajdhani',sans-serif;
+      --font-b: 'DM Sans',sans-serif;
+      --r: 10px;
+    }
+    @media(prefers-color-scheme:light){
+      :root{
+        --black:#1a1710;--black2:#f5f0e8;--black3:#ede8da;--black4:#e0d9c8;
+        --text:#1a1710;--muted:#6b5e42;
+        --border:rgba(140,100,20,.2);--border2:rgba(140,100,20,.1);
+        --grad-bg:linear-gradient(160deg,#f5f0e8 0%,#ede3cc 60%,#f0eadb 100%);
+      }
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--black);color:var(--text);font-family:var(--font-b);line-height:1.65;overflow-x:hidden}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    ul{list-style:none}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:var(--black)}
+    ::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:3px}
+
+    /* UTIL */
+    .container{width:min(1200px,92%);margin-inline:auto}
+    .gold-text{background:var(--grad-gold2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .section-label{font-family:var(--font-s);font-size:.73rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
+    .section-label::before{content:'';width:28px;height:1.5px;background:var(--grad-gold2);display:block}
+    .section-title{font-family:var(--font-d);font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.05;letter-spacing:.02em;margin-bottom:1rem}
+    .divider{width:44px;height:2px;background:var(--grad-gold2);border-radius:2px;margin-bottom:1.8rem}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-s);font-size:1rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.75rem 2rem;border-radius:4px;cursor:pointer;border:none;transition:all .25s}
+    .btn-gold{background:var(--grad-gold);color:var(--black);box-shadow:0 4px 20px rgba(201,150,42,.35)}
+    .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,150,42,.55)}
+    .btn-outline{background:transparent;color:var(--gold);border:1.5px solid var(--gold)}
+    .btn-outline:hover{background:rgba(201,150,42,.08)}
+
+    /* TEXTURE */
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:9999}
+
+    /* GRID BG */
+    .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(201,150,42,1) 1px,transparent 1px),linear-gradient(90deg,rgba(201,150,42,1) 1px,transparent 1px);background-size:64px 64px;opacity:.05;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 10%,transparent 100%)}
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .3s,border-color .3s}
+    nav.scrolled{background:rgba(10,9,6,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)}
+    @media(prefers-color-scheme:light){nav.scrolled{background:rgba(245,240,232,.92)}}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px}
+    .nav-logo{display:flex;align-items:center;gap:.7rem}
+    .logo-hex{width:40px;height:40px}
+    .nav-brand{font-family:var(--font-d);font-size:1.4rem;letter-spacing:.06em;line-height:1}
+    .nav-brand .sub{font-family:var(--font-s);font-size:.68rem;letter-spacing:.25em;color:var(--gold);display:block}
+    .nav-links{display:flex;gap:2.2rem}
+    .nav-links a{font-family:var(--font-s);font-size:.92rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:color .2s;position:relative;padding-bottom:4px}
+    .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;background:var(--grad-gold2);transition:width .25s}
+    .nav-links a:hover{color:var(--cream)}
+    .nav-links a:hover::after{width:100%}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px}
+    .hamburger span{width:24px;height:1.5px;background:var(--gold);border-radius:2px;transition:all .3s}
+    @media(max-width:768px){
+      .nav-links,.nav-cta{display:none}
+      .hamburger{display:flex}
+      .mobile-menu{display:none;position:fixed;inset:70px 0 0;background:var(--black2);padding:2.5rem 2rem;flex-direction:column;gap:1.5rem;z-index:99;border-top:1px solid var(--border)}
+      .mobile-menu.open{display:flex}
+      .mobile-menu a{font-family:var(--font-s);font-size:1.4rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text);border-bottom:1px solid var(--border2);padding-bottom:1rem}
+    }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    #inicio{min-height:100svh;display:flex;align-items:center;position:relative;overflow:hidden;background:var(--grad-bg);padding-top:70px}
+    .hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,42,.07) 0%,transparent 70%);top:-150px;right:-150px;pointer-events:none}
+    .hero-orb2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,42,.05) 0%,transparent 70%);bottom:-100px;left:-100px;pointer-events:none}
+    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding-block:5rem 4rem}
+    .hero-eyebrow{display:flex;align-items:center;gap:.75rem;margin-bottom:1.4rem}
+    .hero-eyebrow .line{width:36px;height:1.5px;background:var(--grad-gold2)}
+    .hero-eyebrow span{font-family:var(--font-s);font-size:.73rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+    .hero-title{font-family:var(--font-d);font-size:clamp(3rem,7vw,5.5rem);line-height:1;letter-spacing:.03em;margin-bottom:1.4rem}
+    .hero-title .line2{display:block;background:var(--grad-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-desc{color:var(--muted);font-size:1.03rem;max-width:480px;margin-bottom:2.2rem;line-height:1.7}
+    .hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
+    .hero-stats{display:flex;margin-top:3rem;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:rgba(201,150,42,.03)}
+    .h-stat{flex:1;padding:1.1rem 1.2rem;border-right:1px solid var(--border);text-align:center}
+    .h-stat:last-child{border-right:none}
+    .h-stat-num{font-family:var(--font-d);font-size:1.9rem;background:var(--grad-gold2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .h-stat-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-family:var(--font-s);margin-top:.1rem}
+    /* hero visual */
+    .hero-visual{position:relative}
+    .hero-img-frame{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:var(--black3);border:1px solid var(--border)}
+    .hero-img-frame::before,.hero-img-frame::after{content:'';position:absolute;width:40px;height:40px;z-index:2;pointer-events:none}
+    .hero-img-frame::before{top:0;left:0;border-top:2px solid var(--gold);border-left:2px solid var(--gold);border-radius:12px 0 0 0}
+    .hero-img-frame::after{bottom:0;right:0;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);border-radius:0 0 12px 0}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,9,6,.65) 0%,transparent 50%);z-index:1}
+    .img-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;color:var(--muted);font-size:.85rem;text-align:center;padding:2rem}
+    .img-ph .ph-icon{font-size:3rem;opacity:.35}
+    .img-ph p{opacity:.5;font-style:italic;max-width:200px}
+    .hero-badge{position:absolute;bottom:1.5rem;left:1.5rem;z-index:3;background:rgba(10,9,6,.88);backdrop-filter:blur(12px);border:1px solid var(--border);padding:.7rem 1.2rem;border-radius:8px;display:flex;align-items:center;gap:.7rem}
+    .pulse-dot{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+    .hero-badge span{font-family:var(--font-s);font-size:.82rem;font-weight:600;letter-spacing:.06em;color:var(--cream)}
+    @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:2.5rem}.hero-visual{order:-1}}
+
+    /* ── TRABAJOS RECIENTES ───────────────────────────── */
+    #trabajos-recientes{padding:6rem 0}
+    .work-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:2.5rem}
+    .work-card{background:var(--black2);border:1px solid var(--border2);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .3s,border-color .3s,box-shadow .3s}
+    .work-card:hover{transform:translateY(-6px);border-color:rgba(201,150,42,.3);box-shadow:0 16px 48px rgba(0,0,0,.5),0 0 0 1px rgba(201,150,42,.1)}
+    .work-img{aspect-ratio:4/3;background:var(--black3);position:relative;overflow:hidden}
+    .work-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+    .work-card:hover .work-img img{transform:scale(1.05)}
+    .work-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,9,6,.75) 0%,transparent 55%);z-index:1;pointer-events:none}
+    .work-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;color:var(--muted);font-size:.8rem;opacity:.5}
+    .work-body{padding:1.3rem}
+    .work-cat{font-family:var(--font-s);font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:.35rem}
+    .work-title{font-family:var(--font-s);font-size:1.1rem;font-weight:700}
+    .work-desc{font-size:.85rem;color:var(--muted);margin-top:.35rem}
+
+    /* ── MISIÓN / VISIÓN ──────────────────────────────── */
+    #mision{padding:6rem 0;background:var(--black2);position:relative;overflow:hidden}
+    .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.5rem}
+    .mv-card{background:var(--black);border:1px solid var(--border2);border-radius:var(--r);padding:2.2rem;position:relative;overflow:hidden;transition:border-color .3s}
+    .mv-card:hover{border-color:var(--border)}
+    .mv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-gold2)}
+    .mv-card::after{content:attr(data-letter);position:absolute;bottom:-1rem;right:1rem;font-family:var(--font-d);font-size:8rem;color:var(--gold);opacity:.04;line-height:1;pointer-events:none}
+    .mv-icon{font-size:2rem;margin-bottom:1.1rem}
+    .mv-label{font-family:var(--font-s);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+    .mv-title{font-family:var(--font-s);font-size:1.35rem;font-weight:700;margin-bottom:.75rem}
+    .mv-text{color:var(--muted);font-size:.93rem;line-height:1.75}
+    @media(max-width:700px){.mv-grid{grid-template-columns:1fr}}
+
+    /* ── SERVICIOS ────────────────────────────────────── */
+    #servicios{padding:6rem 0}
+    .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:2.5rem}
+    .svc-card{background:var(--black2);border:1px solid var(--border2);border-radius:var(--r);padding:1.9rem;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+    .svc-card:not(.coming-soon):hover{transform:translateY(-5px);border-color:rgba(201,150,42,.3);box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 0 1px rgba(201,150,42,.1)}
+    .svc-card.coming-soon{opacity:.65;cursor:default}
+    .svc-card.coming-soon::after{content:'Próximamente';position:absolute;top:1rem;right:1rem;font-family:var(--font-s);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .7rem;background:rgba(201,150,42,.1);color:var(--gold-light);border:1px solid rgba(201,150,42,.22);border-radius:99px}
+    .svc-icon{width:52px;height:52px;border-radius:10px;background:rgba(201,150,42,.08);border:1px solid rgba(201,150,42,.18);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.2rem}
+    .svc-title{font-family:var(--font-s);font-size:1.15rem;font-weight:700;margin-bottom:.5rem}
+    .svc-desc{color:var(--muted);font-size:.9rem;line-height:1.65}
+    .svc-arrow{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--font-s);font-size:.8rem;font-weight:600;letter-spacing:.08em;color:var(--gold);margin-top:1rem;transition:gap .2s}
+    .svc-card:hover .svc-arrow{gap:.6rem}
+
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;place-items:center;backdrop-filter:blur(8px)}
+    .modal-overlay.open{display:grid}
+    .modal{background:var(--black2);border:1px solid var(--border);border-radius:14px;max-width:700px;width:92%;max-height:88svh;overflow-y:auto;padding:2.5rem;position:relative;animation:fadeUp .3s ease}
+    @keyframes fadeUp{from{transform:translateY(22px);opacity:0}to{transform:none;opacity:1}}
+    .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-gold2);border-radius:14px 14px 0 0}
+    .modal-close{position:absolute;top:1.2rem;right:1.2rem;background:var(--black3);border:1px solid var(--border2);color:var(--muted);width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:grid;place-items:center;transition:color .2s,border-color .2s}
+    .modal-close:hover{color:var(--gold);border-color:var(--border)}
+    .modal-imgs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0 1rem}
+    .modal-img{aspect-ratio:4/3;background:var(--black3);border:1px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.78rem;flex-direction:column;gap:.4rem;overflow:hidden;position:relative}
+    .modal-img::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,150,42,.04),transparent)}
+    @media(max-width:500px){.modal-imgs{grid-template-columns:1fr}}
+
+    /* ── CONTACTO ─────────────────────────────────────── */
+    #contacto{padding:6rem 0;background:var(--black2);position:relative;overflow:hidden}
+    .contact-grid{display:grid;grid-template-columns:1fr 1.45fr;gap:2.5rem;align-items:start;margin-top:2.5rem}
+    .contact-info{display:flex;flex-direction:column;gap:1.5rem}
+    .ci-item{display:flex;gap:1rem;align-items:flex-start}
+    .ci-icon{width:46px;height:46px;min-width:46px;border-radius:10px;background:rgba(201,150,42,.08);border:1px solid rgba(201,150,42,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+    .ci-label{font-family:var(--font-s);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem}
+    .ci-val{font-size:.93rem;color:var(--text)}
+    .ci-val a:hover{color:var(--gold)}
+    .map-box{margin-top:1.5rem;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:var(--black3);aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;color:var(--muted);font-size:.82rem;text-align:center;padding:2rem}
+    .map-box .map-icon{font-size:2.5rem;opacity:.35}
+    .contact-form{background:var(--black);border:1px solid var(--border);border-radius:var(--r);padding:2.2rem;position:relative;overflow:hidden}
+    .contact-form::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-gold2)}
+    .form-title{font-family:var(--font-s);font-size:1.3rem;font-weight:700;margin-bottom:1.5rem}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .form-group{display:flex;flex-direction:column;gap:.4rem}
+    .form-group.full{grid-column:1/-1}
+    label{font-family:var(--font-s);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+    input,select,textarea{background:var(--black2);border:1.5px solid var(--border2);color:var(--text);border-radius:6px;padding:.7rem 1rem;font-family:var(--font-b);font-size:.92rem;transition:border-color .2s,box-shadow .2s;outline:none;width:100%}
+    input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,150,42,.1)}
+    textarea{resize:vertical;min-height:110px}
+    select option{background:var(--black2)}
+    .form-submit{margin-top:1.2rem;width:100%;justify-content:center}
+    .form-note{font-size:.78rem;color:var(--muted);margin-top:.75rem;text-align:center}
+    @media(max-width:900px){.contact-grid{grid-template-columns:1fr}}
+    @media(max-width:580px){.form-grid{grid-template-columns:1fr}}
+
+    /* ── FOOTER ───────────────────────────────────────── */
+    footer{background:var(--black);border-top:1px solid var(--border2);padding:4rem 0 2rem}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem}
+    .footer-brand p{color:var(--muted);font-size:.88rem;max-width:320px;line-height:1.7;margin-top:.85rem}
+    .footer-social{display:flex;gap:.75rem;margin-top:1.2rem}
+    .social-btn{width:40px;height:40px;border-radius:8px;background:var(--black2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .2s;color:var(--muted)}
+    .social-btn:hover{background:rgba(201,150,42,.08);border-color:var(--border);color:var(--gold)}
+    .footer-col h4{font-family:var(--font-s);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.1rem}
+    .footer-col ul{display:flex;flex-direction:column;gap:.65rem}
+    .footer-col ul a{color:var(--muted);font-size:.88rem;transition:color .2s}
+    .footer-col ul a:hover{color:var(--cream)}
+    .footer-bottom{border-top:1px solid var(--border2);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .footer-bottom p{color:var(--muted);font-size:.8rem}
+    .footer-live{display:flex;align-items:center;gap:.5rem;font-family:var(--font-s);font-size:.76rem;color:var(--muted)}
+    .green-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;box-shadow:0 0 6px #22c55e}
+    @media(max-width:768px){.footer-top{grid-template-columns:1fr 1fr}}
+    @media(max-width:500px){.footer-top{grid-template-columns:1fr}}
+
+    /* ANIMATIONS */
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+    .reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .7s ease,transform .7s ease}
+    .reveal-right{opacity:0;transform:translateX(28px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible,.reveal-left.visible,.reveal-right.visible{opacity:1;transform:none}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="container nav-inner">
+    <a href="#inicio" class="nav-logo">
+      <svg class="logo-hex" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gH" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#8a6518"/>
+            <stop offset="50%" stop-color="#c9962a"/>
+            <stop offset="100%" stop-color="#e8b84b"/>
+          </linearGradient>
+        </defs>
+        <polygon points="50,4 93,27 93,73 50,96 7,73 7,27" fill="url(#gH)"/>
+        <line x1="20" y1="50" x2="34" y2="50" stroke="#0a0906" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="34" cy="50" r="2.5" fill="#0a0906"/>
+        <circle cx="22" cy="44" r="2.5" fill="#0a0906"/>
+        <line x1="22" y1="47" x2="22" y2="44" stroke="#0a0906" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="22" cy="56" r="2.5" fill="#0a0906"/>
+        <line x1="22" y1="53" x2="22" y2="56" stroke="#0a0906" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="20" y1="44" x2="22" y2="44" stroke="#0a0906" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="20" y1="56" x2="22" y2="56" stroke="#0a0906" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="54" y="63" font-family="Arial Black,sans-serif" font-size="38" fill="#0a0906" text-anchor="middle" font-weight="900">C</text>
+      </svg>
+      <div class="nav-brand">CENTURY<span class="sub">TECH</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-cta"><a href="#contacto" class="btn btn-gold">Solicitar Servicio</a></div>
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#inicio" onclick="closeMenu()">Inicio</a>
+  <a href="#servicios" onclick="closeMenu()">Servicios</a>
+  <a href="#contacto" onclick="closeMenu()">Contacto</a>
+  <a href="#contacto" class="btn btn-gold" onclick="closeMenu()">Solicitar Servicio</a>
+</div>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="grid-bg"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-orb2"></div>
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-eyebrow reveal"><div class="line"></div><span>Servicio Técnico Profesional</span></div>
+      <h1 class="hero-title reveal">EXPERTOS<br>EN TU<br><span class="line2">TECNOLOGÍA</span></h1>
+      <p class="hero-desc reveal">Reparación y mantenimiento profesional de consolas, laptops y computadoras de escritorio. Diagnóstico preciso, materiales de calidad, resultados garantizados.</p>
+      <div class="hero-actions reveal">
+        <a href="#servicios" class="btn btn-gold">Ver Servicios</a>
+        <a href="#contacto" class="btn btn-outline">Contáctanos</a>
+      </div>
+      <div class="hero-stats reveal">
+        <div class="h-stat"><div class="h-stat-num">100%</div><div class="h-stat-label">Compromiso</div></div>
+        <div class="h-stat"><div class="h-stat-num">3+</div><div class="h-stat-label">Servicios</div></div>
+        <div class="h-stat"><div class="h-stat-num">SV</div><div class="h-stat-label">El Salvador</div></div>
+      </div>
+    </div>
+    <div class="hero-visual reveal-right">
+      <div class="hero-img-frame">
+        <!--
+          📷 IMAGEN PRINCIPAL DEL HERO
+          Reemplaza el div.img-ph con:
+          <img src="tu-imagen.jpg" alt="Century Tech" style="width:100%;height:100%;object-fit:cover" />
+          Ideal: la foto de portada de Facebook (placa de circuito)
+          o una foto del taller/equipo trabajando.
+        -->
+        <div class="img-ph">
+          <div class="ph-icon">🔧</div>
+          <strong>Imagen Principal</strong>
+          <p>Foto del taller o portada de Facebook.</p>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-badge"><div class="pulse-dot"></div><span>Atendiendo solicitudes</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRABAJOS RECIENTES -->
+<section id="trabajos-recientes">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Portafolio</div>
+      <h2 class="section-title">TRABAJOS <span class="gold-text">RECIENTES</span></h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted);max-width:540px">Algunos equipos que han pasado por nuestras manos. Cada trabajo es un compromiso con la calidad.</p>
+    </div>
+    <div class="work-grid">
+
+      <div class="work-card reveal">
+        <div class="work-img">
+          <!--
+            📷 TRABAJO 1
+            Reemplaza con: <img src="trabajo1.jpg" alt="Consola reparada" />
+            Sugerencia: foto antes/después de una consola limpiada.
+          -->
+          <div class="work-img-ph"><span style="font-size:2rem">🎮</span><span>Imagen del trabajo</span></div>
+        </div>
+        <div class="work-body">
+          <div class="work-cat">Consolas</div>
+          <div class="work-title">Reparación PlayStation 5</div>
+          <div class="work-desc">Diagnóstico y solución de falla en lector de disco. Entrega en 48 hrs.</div>
+        </div>
+      </div>
+
+      <div class="work-card reveal" style="transition-delay:.1s">
+        <div class="work-img">
+          <!--
+            📷 TRABAJO 2
+            Reemplaza con: <img src="trabajo2.jpg" alt="Laptop mantenimiento" />
+            Sugerencia: foto interior de laptop durante limpieza.
+          -->
+          <div class="work-img-ph"><span style="font-size:2rem">💻</span><span>Imagen del trabajo</span></div>
+        </div>
+        <div class="work-body">
+          <div class="work-cat">Laptops</div>
+          <div class="work-title">Mantenimiento Preventivo</div>
+          <div class="work-desc">Limpieza interna, cambio de pasta térmica y optimización de rendimiento.</div>
+        </div>
+      </div>
+
+      <div class="work-card reveal" style="transition-delay:.2s">
+        <div class="work-img">
+          <!--
+            📷 TRABAJO 3
+            Reemplaza con: <img src="trabajo3.jpg" alt="Upgrade SSD" />
+            Sugerencia: foto de SSD/HDD instalado o proceso de upgrade.
+          -->
+          <div class="work-img-ph"><span style="font-size:2rem">💾</span><span>Imagen del trabajo</span></div>
+        </div>
+        <div class="work-body">
+          <div class="work-cat">PC / Upgrade</div>
+          <div class="work-title">Ampliación de Almacenamiento</div>
+          <div class="work-desc">Instalación de SSD NVMe y migración del sistema operativo sin pérdida de datos.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MISIÓN / VISIÓN -->
+<section id="mision">
+  <div class="grid-bg" style="opacity:.03"></div>
+  <div class="container" style="position:relative;z-index:1">
+    <div class="reveal">
+      <div class="section-label">Nosotros</div>
+      <h2 class="section-title">MISIÓN <span class="gold-text">&amp; VISIÓN</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="mv-grid">
+      <div class="mv-card reveal-left" data-letter="M">
+        <div class="mv-icon">🎯</div>
+        <div class="mv-label">Misión</div>
+        <div class="mv-title">¿Por qué existimos?</div>
+        <p class="mv-text">Brindar soluciones tecnológicas de calidad a personas y empresas, ofreciendo un servicio técnico honesto, ágil y a precios justos. Nos comprometemos a mantener los dispositivos de nuestros clientes funcionando en su mejor estado, con transparencia en cada proceso.</p>
+      </div>
+      <div class="mv-card reveal-right" data-letter="V">
+        <div class="mv-icon">🚀</div>
+        <div class="mv-label">Visión</div>
+        <div class="mv-title">¿A dónde vamos?</div>
+        <p class="mv-text">Convertirnos en el centro tecnológico de referencia en nuestra comunidad, expandiendo nuestro catálogo de servicios de manera progresiva y formando un equipo altamente capacitado, capaz de dar solución integral a cualquier necesidad tecnológica del cliente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Lo que hacemos</div>
+      <h2 class="section-title">NUESTROS <span class="gold-text">SERVICIOS</span></h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted);max-width:600px">Haz clic en cualquier servicio para ver más detalles e imágenes de trabajos anteriores.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal" onclick="openModal('consolas')">
+        <div class="svc-icon">🎮</div>
+        <div class="svc-title">Mantenimiento de Consolas</div>
+        <p class="svc-desc">Limpieza interna, cambio de pasta térmica, reparación de lectores y diagnóstico completo. PS4, PS5, Xbox y Nintendo Switch.</p>
+        <div class="svc-arrow">Ver más →</div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.08s" onclick="openModal('laptops')">
+        <div class="svc-icon">💻</div>
+        <div class="svc-title">Mantenimiento de Laptops</div>
+        <p class="svc-desc">Limpieza preventiva y correctiva, cambio de pasta térmica, reparación de teclados, pantallas, bisagras y diagnóstico completo.</p>
+        <div class="svc-arrow">Ver más →</div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.16s" onclick="openModal('pc')">
+        <div class="svc-icon">🖥️</div>
+        <div class="svc-title">PC de Escritorio</div>
+        <p class="svc-desc">Mantenimiento preventivo y correctivo, diagnóstico de fallas, upgrades de componentes y armado de PC a medida.</p>
+        <div class="svc-arrow">Ver más →</div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.08s" onclick="openModal('software')">
+        <div class="svc-icon">💿</div>
+        <div class="svc-title">Instalación de Software</div>
+        <p class="svc-desc">Instalación de sistemas operativos, programas especializados, antivirus y configuración completa del entorno.</p>
+        <div class="svc-arrow">Ver más →</div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.16s" onclick="openModal('almacenamiento')">
+        <div class="svc-icon">💾</div>
+        <div class="svc-title">Aumento de Almacenamiento</div>
+        <p class="svc-desc">Instalación de SSD/HDD en laptops y consolas, migración de datos y optimización del espacio disponible.</p>
+        <div class="svc-arrow">Ver más →</div>
+      </div>
+      <div class="svc-card coming-soon reveal" style="transition-delay:.24s;cursor:default">
+        <div class="svc-icon" style="background:rgba(201,150,42,.05)">📱</div>
+        <div class="svc-title">Reparación de Smartphones</div>
+        <p class="svc-desc">Cambio de pantallas, baterías y diagnóstico de fallas en dispositivos iOS y Android.</p>
+      </div>
+      <div class="svc-card coming-soon reveal" style="transition-delay:.08s;cursor:default">
+        <div class="svc-icon" style="background:rgba(201,150,42,.05)">📷</div>
+        <div class="svc-title">Cámaras de Seguridad</div>
+        <p class="svc-desc">Instalación y configuración de sistemas de vigilancia CCTV para hogar y negocios.</p>
+      </div>
+      <div class="svc-card coming-soon reveal" style="transition-delay:.16s;cursor:default">
+        <div class="svc-icon" style="background:rgba(201,150,42,.05)">🌐</div>
+        <div class="svc-title">Redes y Conectividad</div>
+        <p class="svc-desc">Configuración de redes WiFi, cableado estructurado y soluciones de conectividad.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="grid-bg" style="opacity:.03"></div>
+  <div class="container" style="position:relative;z-index:1">
+    <div class="reveal">
+      <div class="section-label">Escríbenos</div>
+      <h2 class="section-title">CONTACTO <span class="gold-text">&amp; UBICACIÓN</span></h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted);max-width:560px">¿Tienes un dispositivo que necesita atención? Contáctanos y te responderemos lo antes posible.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal-left">
+        <div class="ci-item">
+          <div class="ci-icon">📞</div>
+          <div>
+            <div class="ci-label">Teléfono / WhatsApp</div>
+            <div class="ci-val"><a href="tel:+50300000000">+503 0000-0000</a>
+            <!-- 📝 Cambia por tu número real --></div>
+          </div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">✉️</div>
+          <div>
+            <div class="ci-label">Correo Electrónico</div>
+            <div class="ci-val"><a href="mailto:info@centurytech.sv">info@centurytech.sv</a>
+            <!-- 📝 Cambia por tu correo real --></div>
+          </div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">📍</div>
+          <div>
+            <div class="ci-label">Dirección</div>
+            <div class="ci-val">San Miguel, El Salvador
+            <!-- 📝 Agrega la dirección exacta --></div>
+          </div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">🕐</div>
+          <div>
+            <div class="ci-label">Horario de Atención</div>
+            <div class="ci-val">Lun – Vie: 8:00 AM – 6:00 PM<br>Sáb: 8:00 AM – 2:00 PM
+            <!-- 📝 Ajusta tus horarios reales --></div>
+          </div>
+        </div>
+        <div class="map-box">
+          <!--
+            🗺️ GOOGLE MAPS — 3 pasos:
+            1. Busca tu dirección en maps.google.com
+            2. Clic en "Compartir" → "Insertar mapa" → copia el <iframe>
+            3. Reemplaza todo este bloque (incluido map-icon y los párrafos) con el iframe.
+            Ejemplo:
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18..."
+              width="100%" height="100%" style="border:0" allowfullscreen loading="lazy">
+            </iframe>
+          -->
+          <div class="map-icon">🗺️</div>
+          <strong>Mapa de Ubicación</strong>
+          <p>Pega aquí el iframe de Google Maps<br>con tu dirección exacta.</p>
+        </div>
+      </div>
+      <div class="contact-form reveal-right">
+        <div class="form-title">📋 Solicitar un Servicio</div>
+        <div class="form-grid">
+          <div class="form-group"><label for="nombre">Nombre</label><input type="text" id="nombre" placeholder="Tu nombre completo" /></div>
+          <div class="form-group"><label for="telefono">Teléfono</label><input type="tel" id="telefono" placeholder="+503 0000-0000" /></div>
+          <div class="form-group full"><label for="email">Correo Electrónico</label><input type="email" id="email" placeholder="tucorreo@email.com" /></div>
+          <div class="form-group full">
+            <label for="servicio">Servicio de interés</label>
+            <select id="servicio">
+              <option value="">— Selecciona un servicio —</option>
+              <option>Mantenimiento de Consolas</option>
+              <option>Mantenimiento de Laptops</option>
+              <option>PC de Escritorio</option>
+              <option>Instalación de Software</option>
+              <option>Aumento de Almacenamiento</option>
+              <option>Reparación de Dispositivo Electrónico</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group full"><label for="dispositivo">Marca / Modelo del dispositivo</label><input type="text" id="dispositivo" placeholder="Ej: PlayStation 5, HP Laptop 15, etc." /></div>
+          <div class="form-group full"><label for="descripcion">Descripción del problema</label><textarea id="descripcion" placeholder="Describe brevemente el problema o el servicio que necesitas..."></textarea></div>
+        </div>
+        <button class="btn btn-gold form-submit" onclick="submitForm()">Enviar Solicitud →</button>
+        <p class="form-note">También puedes contactarnos directamente por WhatsApp o Facebook.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:.2rem">
+          <svg class="logo-hex" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gH2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8a6518"/><stop offset="50%" stop-color="#c9962a"/><stop offset="100%" stop-color="#e8b84b"/></linearGradient></defs>
+            <polygon points="50,4 93,27 93,73 50,96 7,73 7,27" fill="url(#gH2)"/>
+            <line x1="20" y1="50" x2="34" y2="50" stroke="#0a0906" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="34" cy="50" r="2.5" fill="#0a0906"/><circle cx="22" cy="44" r="2.5" fill="#0a0906"/>
+            <line x1="22" y1="47" x2="22" y2="44" stroke="#0a0906" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="22" cy="56" r="2.5" fill="#0a0906"/>
+            <line x1="22" y1="53" x2="22" y2="56" stroke="#0a0906" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="20" y1="44" x2="22" y2="44" stroke="#0a0906" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="20" y1="56" x2="22" y2="56" stroke="#0a0906" stroke-width="2.5" stroke-linecap="round"/>
+            <text x="54" y="63" font-family="Arial Black,sans-serif" font-size="38" fill="#0a0906" text-anchor="middle" font-weight="900">C</text>
+          </svg>
+          <div class="nav-brand">CENTURY<span class="sub">TECH</span></div>
+        </div>
+        <p>Centro de servicio técnico profesional especializado en el mantenimiento y reparación de consolas, laptops y equipos electrónicos en San Miguel, El Salvador.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/share/1E5Q2uuMWY/" target="_blank" class="social-btn" title="Facebook">📘</a>
+          <a href="https://wa.me/50300000000" target="_blank" class="social-btn" title="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="#servicios">Consolas</a></li>
+          <li><a href="#servicios">Laptops</a></li>
+          <li><a href="#servicios">PC Escritorio</a></li>
+          <li><a href="#servicios">Instalación de Software</a></li>
+          <li><a href="#servicios">Almacenamiento</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#mision">Misión y Visión</a></li>
+          <li><a href="#trabajos-recientes">Trabajos Recientes</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+          <li><a href="https://www.facebook.com/share/1E5Q2uuMWY/" target="_blank">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Century Tech. Todos los derechos reservados.</p>
+      <div class="footer-live"><div class="green-dot"></div><span>Atendiendo en San Miguel, El Salvador</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>30));
+  function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open')}
+  function closeMenu(){document.getElementById('mobileMenu').classList.remove('open')}
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+  const services={
+    consolas:{icon:'🎮',title:'Mantenimiento de Consolas',desc:`Realizamos diagnóstico completo, limpieza interna profunda y cambio de pasta térmica en consolas PlayStation (PS4/PS5), Xbox y Nintendo Switch.\n\nNuestro servicio incluye revisión del sistema de enfriamiento, ventiladores, puertos USB y lector de disco. Entregamos tu consola funcionando de forma óptima con garantía en el trabajo realizado.`,imgs:['Antes/Después — consola abierta en taller','Cambio de pasta térmica y limpieza profunda']},
+    laptops:{icon:'💻',title:'Mantenimiento de Laptops',desc:`Servicio preventivo y correctivo para laptops de todas las marcas. Incluye limpieza interna, cambio de pasta térmica, diagnóstico de hardware y software, reparación de teclados, pantallas y bisagras.\n\nMejoramos el rendimiento de tu equipo, reducimos temperaturas y prolongamos su vida útil.`,imgs:['Interior de laptop durante limpieza','Equipo listo para entrega']},
+    pc:{icon:'🖥️',title:'PC de Escritorio',desc:`Mantenimiento completo para computadoras de escritorio: diagnóstico de fallas, limpieza de componentes, cambio de pasta térmica, upgrades de RAM, SSD y tarjeta gráfica.\n\nTambién ofrecemos armado de PC a medida según tu presupuesto y necesidades específicas.`,imgs:['Interior de PC durante mantenimiento','Componentes instalados / upgrade']},
+    software:{icon:'💿',title:'Instalación de Software',desc:`Instalamos y configuramos sistemas operativos (Windows, macOS, Linux), programas de oficina, diseño y edición, antivirus y drivers.\n\nTambién realizamos formateos con respaldo de datos previo, activación de licencias y optimización del sistema desde cero.`,imgs:['Proceso de instalación en pantalla','Sistema listo y configurado']},
+    almacenamiento:{icon:'💾',title:'Aumento de Almacenamiento',desc:`Instalamos SSDs y HDDs en laptops, PC y consolas (PS4/PS5/Xbox). Realizamos la migración completa del sistema operativo y archivos sin pérdida de información.\n\nNotarás la diferencia desde el primer arranque: más velocidad, más capacidad.`,imgs:['SSD instalado en laptop','Ampliación de consola — proceso completo']}
+  };
+
+  function openModal(key){
+    const s=services[key];if(!s)return;
+    document.getElementById('modalContent').innerHTML=`
+      <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:1.2rem">
+        <span style="font-size:2.2rem">${s.icon}</span>
+        <h3 style="font-family:'Rajdhani',sans-serif;font-size:1.7rem;font-weight:700;letter-spacing:.03em">${s.title}</h3>
+      </div>
+      <p style="color:var(--muted);line-height:1.8;white-space:pre-line;font-size:.93rem">${s.desc}</p>
+      <div style="font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:1.5rem 0 .8rem;display:flex;align-items:center;gap:.6rem">
+        <span style="width:20px;height:1.5px;background:var(--gold);display:block"></span>
+        Trabajos anteriores
+      </div>
+      <div class="modal-imgs">
+        ${s.imgs.map(txt=>`
+          <div class="modal-img">
+            <!--
+              📷 Reemplaza con:
+              <img src="ruta.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px" />
+            -->
+            <span style="font-size:1.8rem;opacity:.4">📸</span>
+            <span style="font-size:.78rem;text-align:center;padding:0 .5rem">${txt}</span>
+          </div>`).join('')}
+      </div>
+      <p style="font-size:.82rem;color:var(--muted)">¿Necesitas este servicio? <a href="#contacto" onclick="closeModal()" style="color:var(--gold);font-weight:700">Solicítalo aquí →</a></p>`;
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
+  document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+  function submitForm(){
+    const n=document.getElementById('nombre').value.trim();
+    const s=document.getElementById('servicio').value;
+    if(!n||!s){alert('Por favor completa al menos tu nombre y el servicio de interés.');return;}
+    alert(`¡Gracias, ${n}!\n\nHemos recibido tu solicitud de "${s}".\nNos comunicaremos contigo pronto.`);
+  }
+</script>
+</body>
+</html>
